@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fukk diabetes</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@^2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1"></script>
+
+    <script type="text/javascript" src="../static/Utils.js"></script>
+    <script type="text/javascript" src="../static/GlucoseEntry.js"></script>
+    <script type="text/javascript" src="../static/GlucoseDataSet.js"></script>
+    <script type="text/javascript" src="../static/GlucoseRepository.js"></script>
+    <script type="text/javascript" src="../static/GlucoseChart.js"></script>
+</head>
+<body>
+
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script>
+    let chart = new GlucoseChart(document.getElementById('myChart'));
+
+    let glucoseRepository = new GlucoseRepository();
+    let today = glucoseRepository.findToday();
+    let yesterday = glucoseRepository.findYesterday();
+    Promise.all([today, yesterday]).then(data => {
+        chart.updateDataSets(data);
+        chart.update();
+    });
+</script>
+</body>
+</html>
