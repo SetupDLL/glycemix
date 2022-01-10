@@ -1,9 +1,7 @@
-const ENTRIES_URL = 'http://localhost:8080/entries';
-
 class GlucoseRepository {
 
     findToday() {
-        return fetch(ENTRIES_URL + `/today`)
+        return fetch(`/entries/today`)
             .then((response) => {
                 return response.json();
             })
@@ -13,7 +11,7 @@ class GlucoseRepository {
     }
 
     findYesterday() {
-        return fetch(ENTRIES_URL + `/yesterday`)
+        return fetch(`/entries/yesterday`)
             .then((response) => {
                 return response.json();
             })
@@ -25,7 +23,7 @@ class GlucoseRepository {
     findByDay(date, dataSetName, primary) {
         let start = date.startOf('day').toMillis() - 1 + 420;
         let end = date.endOf('day').toMillis() + 1 + 420;
-        return fetch(ENTRIES_URL + `?find[date][$gte]=${start}&find[date][$lte]=${end}&count=100`)
+        return fetch(`?find[date][$gte]=${start}&find[date][$lte]=${end}&count=100`)
             .then((response) => {
                 return response.json();
             })
