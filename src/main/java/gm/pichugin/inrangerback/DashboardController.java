@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.TimeZone;
+
 @Controller
 public class DashboardController {
 
@@ -18,11 +20,11 @@ public class DashboardController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model) {
+    public String homePage(Model model, TimeZone timezone) {
         model
                 .addAttribute("appName", appName)
-                .addAttribute("todayRecords", glucoseService.getToday())
-                .addAttribute("yesterdayRecords", glucoseService.getYesterday());
+                .addAttribute("todayRecords", glucoseService.getToday(timezone))
+                .addAttribute("yesterdayRecords", glucoseService.getYesterday(timezone));
 
         return "index";
     }

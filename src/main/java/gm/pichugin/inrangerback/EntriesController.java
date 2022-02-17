@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -25,18 +26,18 @@ public class EntriesController {
     }
 
     @GetMapping("/today")
-    public Iterable<GlucoseRecord> getToday() {
-        return glucoseService.getToday();
+    public Iterable<GlucoseRecord> getToday(TimeZone timezone) {
+        return glucoseService.getToday(timezone);
     }
 
     @GetMapping("/yesterday")
-    public Iterable<GlucoseRecord> getYesterday() {
-        return glucoseService.getYesterday();
+    public Iterable<GlucoseRecord> getYesterday(TimeZone timezone) {
+        return glucoseService.getYesterday(timezone);
     }
 
-    private List<GlucoseRecord> getForDate(LocalDate date) {
-        return glucoseService.getForDate(date);
-    }
+//    private List<GlucoseRecord> getForDate(LocalDate date) {
+//        return glucoseService.getForDate(date);
+//    }
 
     @GetMapping("/lastId")
     public Short getLastId() {
