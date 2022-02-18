@@ -15,9 +15,10 @@ public record GlucoseService(GlucoseRecordRepository glucoseRecordRepository) {
         final LocalDateTime startOfDay = date.atStartOfDay();
         final LocalDateTime startOfNextDay = date.plusDays(1).atStartOfDay();
 
+        final int offset = timezone.getOffset(startOfDay.toEpochSecond(ZoneOffset.UTC)) / 1000;
         return glucoseRecordRepository.findByTimeBetweenOrderByTime(
-                startOfDay.toEpochSecond(ZoneOffset.ofTotalSeconds(timezone.getRawOffset() / 1000)),
-                startOfNextDay.toEpochSecond(ZoneOffset.ofTotalSeconds(timezone.getRawOffset() / 1000))
+                startOfDay.toEpochSecond(ZoneOffset.UTC) - offset,
+                startOfNextDay.toEpochSecond(ZoneOffset.UTC) - offset - 1
         );
     }
 
