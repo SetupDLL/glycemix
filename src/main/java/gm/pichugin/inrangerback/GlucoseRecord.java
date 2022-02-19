@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -14,9 +14,7 @@ public class GlucoseRecord {
 
     @Id
     private short id;
-//    private LocalDateTime date;
-    private long time;
-    private int timeOffset;
+    private Instant date;
     private float glucose;
 
     public GlucoseRecord() {

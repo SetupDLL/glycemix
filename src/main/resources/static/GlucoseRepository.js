@@ -21,8 +21,8 @@ class GlucoseRepository {
     }
 
     findByDay(date, dataSetName, primary) {
-        let start = date.startOf('day').toMillis() - 1 + 420;
-        let end = date.endOf('day').toMillis() + 1 + 420;
+        let start = date.startOf('day').toMillis() + 1;
+        let end = date.endOf('day').toMillis() - 1;
         return fetch(`?find[date][$gte]=${start}&find[date][$lte]=${end}&count=100`)
             .then((response) => {
                 return response.json();
