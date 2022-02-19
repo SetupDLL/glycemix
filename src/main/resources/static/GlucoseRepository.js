@@ -1,34 +1,21 @@
 class GlucoseRepository {
 
-    findToday() {
-        return fetch(`/entries/today`)
+    findOnDate(date, dataSetName, primary) {
+        let from = date.startOf('day').toSeconds();
+        return fetch(`/entries/date/${from}`)
             .then((response) => {
                 return response.json();
             })
             .then(data => {
-                return new GlucoseDataSet('Today', data.map(e => new GlucoseEntry(e.time, e.glucose)), true);
+                return new GlucoseDataSet(dataSetName, data.map(e => new GlucoseEntry(e.date, e.glucose)), primary);
             });
+    }
+
+    findToday() {
+        return this.findOnDate(DateTime.now(), 'Today', true);
     }
 
     findYesterday() {
-        return fetch(`/entries/yesterday`)
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                return new GlucoseDataSet('Yesterday', data.map(e => new GlucoseEntry(e.time, e.glucose)), false);
-            });
-    }
-
-    findByDay(date, dataSetName, primary) {
-        let start = date.startOf('day').toMillis() + 1;
-        let end = date.endOf('day').toMillis() - 1;
-        return fetch(`?find[date][$gte]=${start}&find[date][$lte]=${end}&count=100`)
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                return new GlucoseDataSet(dataSetName, data.map(e => new GlucoseEntry(e.date, e.mbg)), primary);
-            });
+        return this.findOnDate(DateTime.now().minus({days: 1}), 'Yesterday', false);
     }
 }

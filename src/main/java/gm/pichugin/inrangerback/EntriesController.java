@@ -2,9 +2,9 @@ package gm.pichugin.inrangerback;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -25,19 +25,11 @@ public class EntriesController {
         return glucoseRecordRepository.findAll();
     }
 
-    @GetMapping("/today")
-    public Iterable<GlucoseRecord> getToday(TimeZone timezone) {
-        return glucoseService.getToday(timezone);
+    @GetMapping("/date/{unix}")
+    public Iterable<GlucoseRecord> getOnDate(@PathVariable Long unix) {
+        final Instant from = Instant.ofEpochSecond(unix);
+        return glucoseService.findByPeriod(from, from.plus(1, ChronoUnit.DAYS).minusNanos(1));
     }
-
-    @GetMapping("/yesterday")
-    public Iterable<GlucoseRecord> getYesterday(TimeZone timezone) {
-        return glucoseService.getYesterday(timezone);
-    }
-
-//    private List<GlucoseRecord> getForDate(LocalDate date) {
-//        return glucoseService.getForDate(date);
-//    }
 
     @GetMapping("/lastId")
     public Short getLastId() {
