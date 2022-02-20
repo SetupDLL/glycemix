@@ -21,16 +21,34 @@
 </div>
 
 <script>
+    const UPDATE_TIMEOUT = 5_000
+
     const DateTime = luxon.DateTime;
     let chart = new GlucoseChart(document.getElementById('myChart'));
-
     let glucoseRepository = new GlucoseRepository();
-    let today = glucoseRepository.findToday();
-    let yesterday = glucoseRepository.findYesterday();
-    Promise.all([today, yesterday]).then(data => {
-        chart.updateDataSets(data);
-        chart.update();
-    });
+
+    function updateChart() {
+        let today = glucoseRepository.findToday();
+        let yesterday = glucoseRepository.findYesterday();
+        Promise.all([today, yesterday]).then(data => {
+            chart.updateDataSets(data);
+            chart.update();
+        });
+    }
+
+    let lastId = -1;
+
+    function checkUpdates() {
+        glucoseRepository.getLastId().then(id => {
+            if (lastId !== id) {
+                updateChart();
+                lastId = id;
+            }
+        });
+    }
+
+    updateChart();
+    setInterval(checkUpdates, UPDATE_TIMEOUT);
 </script>
 </body>
 </html>

@@ -18,4 +18,11 @@ class GlucoseRepository {
     findYesterday() {
         return this.findOnDate(DateTime.now().minus({days: 1}), 'Yesterday', false);
     }
+
+    getLastId() {
+        return fetch(`/entries/lastId`)
+            .then((response) => {
+                return response.json();
+            });
+    }
 }
