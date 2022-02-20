@@ -36,7 +36,12 @@
         });
     }
 
-    let lastId = -1;
+    let lastId;
+    glucoseRepository.getLastId().then(id => {
+        lastId = id;
+        updateChart();
+        setInterval(checkUpdates, UPDATE_TIMEOUT);
+    });
 
     function checkUpdates() {
         glucoseRepository.getLastId().then(id => {
@@ -46,9 +51,6 @@
             }
         });
     }
-
-    updateChart();
-    setInterval(checkUpdates, UPDATE_TIMEOUT);
 </script>
 </body>
 </html>
