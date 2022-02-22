@@ -13,11 +13,13 @@ class GlucoseDataSet {
         }
         this.cubicInterpolationMode = 'monotone';
         this.data = data;
+        this.borderWidth = BORDER_WIDTH;
     }
 }
 
 
 let width, height, gradient;
+
 function getGradient(chart) {
     const {ctx, chartArea} = chart;
 
@@ -39,14 +41,6 @@ function getGradient(chart) {
 
     return gradient;
 }
-
-const MAX_TARGET_GLUCOSE = 10;
-const MIN_TARGET_GLUCOSE = 5;
-
-const HIGH_COLOR = CHART_COLORS.red;
-const MID_COLOR = CHART_COLORS.green;
-const LOW_COLOR = CHART_COLORS.blue;
-
 
 function applyColors(gradient, min, max) {
     let range = max - min;

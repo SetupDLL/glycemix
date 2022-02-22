@@ -1,21 +1,28 @@
-const MAX_GLUCOSE = 9.5;
-const MIN_GLUCOSE = 4.5;
-
-const GLUCOSE_RANGE_COLOR = 'rgba(75,192,77,0.2)';
-const GLUCOSE_RANGE_BORDER_COLOR = 'rgb(159,204,161)';
-const GLUCOSE_RANGE_BORDER_WIDTH = 1;
-
 const config = {
     type: 'line',
+    // plugins: [
+    //     {
+    //         id: 'custom_canvas_background_color',
+    //         beforeDraw: (chart) => {
+    //             const ctx = chart.canvas.getContext('2d');
+    //             ctx.save();
+    //             ctx.globalCompositeOperation = 'destination-over';
+    //             ctx.fillStyle = BACKGROUND_COLOR;
+    //             ctx.fillRect(0, 0, chart.width, chart.height);
+    //             ctx.restore();
+    //         }
+    //     }
+    // ],
     options: {
         responsive: true,
+        // maintainAspectRatio: false,
         plugins: {
             annotation: {
                 annotations: {
                     box1: {
                         type: 'box',
-                        yMin: MIN_GLUCOSE,
-                        yMax: MAX_GLUCOSE,
+                        yMin: MIN_TARGET_GLUCOSE,
+                        yMax: MAX_TARGET_GLUCOSE,
                         backgroundColor: GLUCOSE_RANGE_COLOR,
                         borderColor: GLUCOSE_RANGE_BORDER_COLOR,
                         borderWidth: GLUCOSE_RANGE_BORDER_WIDTH
