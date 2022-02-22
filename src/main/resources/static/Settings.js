@@ -6,9 +6,9 @@ const MIN_TARGET_GLUCOSE = 4.5;
 
 const BORDER_WIDTH = 4;
 
-const HIGH_COLOR = 'rgb(255 153 0)';
-const MID_COLOR = 'rgb(39 255 177)';
-const LOW_COLOR = 'rgb(255 0 61)';
+const HIGH_COLOR = CHART_COLORS.orange;
+const MID_COLOR = CHART_COLORS.green;
+const LOW_COLOR = CHART_COLORS.red;
 
 const GLUCOSE_RANGE_COLOR = 'rgba(75,192,77,0.2)';
 const GLUCOSE_RANGE_BORDER_COLOR = 'rgb(159,204,161)';
