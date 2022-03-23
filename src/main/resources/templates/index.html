@@ -49,7 +49,6 @@
         let dayBefore = glucoseRepository.findOnDate(dateBefore, dateBefore.toFormat(DATASET_DATE_FORMAT), false);
         Promise.all([day, dayBefore]).then(data => {
             chart.updateDataSets(data);
-            chart.update();
         });
     }
 
