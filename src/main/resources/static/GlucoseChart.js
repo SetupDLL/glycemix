@@ -62,5 +62,8 @@ class GlucoseChart extends Chart {
 
     updateDataSets(dataSets) {
         config.data.datasets = dataSets;
+        this.update();
+        dataSets.forEach(ds => ds.updateGradient());
+        this.update();
     }
 }

@@ -1,45 +1,49 @@
 class GlucoseDataSet {
 
+    width;
+    height;
+    gradient;
+    primary;
+
     constructor(name, data, primary) {
         this.label = name;
-        if (primary) {
+        this.primary = primary;
+        this.cubicInterpolationMode = 'monotone';
+        this.data = data;
+        this.borderWidth = BORDER_WIDTH;
+    }
+
+    updateGradient() {
+        if (this.primary) {
             this.borderColor = context => {
                 const chart = context.chart;
                 if (!chart.chartArea) {
                     return;
                 }
-                return getGradient(chart);
+                return this.getGradient(chart);
             };
         }
-        this.cubicInterpolationMode = 'monotone';
-        this.data = data;
-        this.borderWidth = BORDER_WIDTH;
     }
-}
 
+    getGradient(chart) {
+        const {ctx, chartArea} = chart;
 
-let width, height, gradient;
+        const chartWidth = chartArea.right - chartArea.left;
+        const chartHeight = chartArea.bottom - chartArea.top;
+        if (!this.gradient || this.width !== chartWidth || this.height !== chartHeight) {
+            this.width = chartWidth;
+            this.height = chartHeight;
 
-function getGradient(chart) {
-    const {ctx, chartArea} = chart;
-
-    const chartWidth = chartArea.right - chartArea.left;
-    const chartHeight = chartArea.bottom - chartArea.top;
-    if (!gradient || width !== chartWidth || height !== chartHeight) {
-        // Create the gradient because this is either the first render
-        // or the size of the chart has changed
-        width = chartWidth;
-        height = chartHeight;
-
-        let axis = chart.scales.y;
-        if (!axis.height) {
-            return;
+            let axis = chart.scales.y;
+            if (!axis.height) {
+                return;
+            }
+            this.gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+            applyColors(this.gradient, axis.min, axis.max);
         }
-        gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-        applyColors(gradient, axis.min, axis.max);
-    }
 
-    return gradient;
+        return this.gradient;
+    }
 }
 
 function applyColors(gradient, min, max) {
