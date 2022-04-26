@@ -7,3 +7,7 @@ const CHART_COLORS = {
     purple: 'rgb(153, 102, 255)',
     grey: 'rgb(201, 203, 207)'
 };
+
+const START_OF_DAY = new Date(1970, 1, 1, 0, 0, 0).getTime();
+const END_OF_DAY = new Date(1970, 1, 1, 23, 59, 59, 999).getTime();
+const MIN_CHART_WIDTH = 1200;

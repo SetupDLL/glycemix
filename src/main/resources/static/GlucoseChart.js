@@ -1,6 +1,3 @@
-const START_OF_DAY = new Date(1970, 1, 1, 0, 0, 0).getTime();
-const END_OF_DAY = new Date(1970, 1, 1, 23, 59, 59, 999).getTime();
-
 const config = {
     type: 'line',
     options: {
@@ -37,6 +34,17 @@ const config = {
                 },
                 align: 'end',
                 anchor: 'end'
+            },
+            zoom: {
+                pan: {
+                    enabled: true,
+                    mode: 'x',
+                    // pan options and/or events
+                },
+                // mode: 'x',
+                limits: {
+                    x: {min: START_OF_DAY, max: END_OF_DAY},
+                },
             }
         },
         parsing: {
