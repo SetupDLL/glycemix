@@ -26,7 +26,11 @@
 </head>
 <body>
 
-<input type="text" id="date" placeholder="Выберите дату"/>
+<div id="date-container">
+    <button id="prevDate" onclick="shiftDays(-1)"><</button>
+    <input type="text" id="date" placeholder="Выберите дату"/>
+    <button id="nextDate" onclick="shiftDays(1)">></button>
+</div>
 <canvas id="myChart"></canvas>
 
 <script>
@@ -36,7 +40,10 @@
 
     let today = new Date();
     let forDate = DateTime.fromJSDate(today);
-    new AirDatepicker('#date', {
+    let datepicker = new AirDatepicker('#date', {
+        isMobile: true,
+        autoClose: true,
+        buttons: ['today'],
         selectedDates: [today],
         maxDate: today,
         // TODO minDate
@@ -61,6 +68,7 @@
             chart.updateDataSet(data);
             chart.update();
         });
+        document.getElementById("nextDate").disabled = isCurrentDate(date);
     }
 
     let lastId;
@@ -71,7 +79,7 @@
     });
 
     function checkUpdates() {
-        if (forDate.startOf('day').toSeconds() !== DateTime.now().startOf('day').toSeconds()) return;
+        if (isCurrentDate(forDate)) return;
 
         glucoseRepository.getLastId().then(id => {
             if (lastId !== id) {
@@ -79,6 +87,15 @@
                 lastId = id;
             }
         });
+    }
+
+    function shiftDays(num) {
+        let nextDate = forDate.plus({days: num});
+        datepicker.selectDate(nextDate.toJSDate());
+    }
+
+    function isCurrentDate(date) {
+        return date.startOf('day').toSeconds() === DateTime.now().startOf('day').toSeconds();
     }
 </script>
 </body>
