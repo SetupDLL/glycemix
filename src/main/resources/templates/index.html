@@ -8,9 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@^2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.3.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.1.1/air-datepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@3.1.1/air-datepicker.css">
+
+    <link rel="stylesheet" href="../static/glycemix.css"/>
 
     <script type="text/javascript" src="../static/Utils.js"></script>
     <script type="text/javascript" src="../static/Settings.js"></script>
@@ -25,6 +28,8 @@
 <canvas id="myChart"></canvas>
 
 <script>
+    Chart.register(ChartDataLabels);
+
     const DateTime = luxon.DateTime;
 
     let today = new Date();
@@ -45,10 +50,9 @@
     function updateChart(date) {
         let dateBefore = date.minus({days: 1});
 
-        let day = glucoseRepository.findOnDate(date, date.toFormat(DATASET_DATE_FORMAT), true);
-        let dayBefore = glucoseRepository.findOnDate(dateBefore, dateBefore.toFormat(DATASET_DATE_FORMAT), false);
-        Promise.all([day, dayBefore]).then(data => {
-            chart.updateDataSets(data);
+        // date.toFormat(DATASET_DATE_FORMAT)
+        glucoseRepository.findOnDate(date).then(data => {
+            chart.updateDataSet(data);
             chart.update();
         });
     }

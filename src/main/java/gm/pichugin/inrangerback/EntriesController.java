@@ -21,14 +21,22 @@ public class EntriesController {
     }
 
     @GetMapping("/")
-    public Iterable<GlucoseRecord> getAll() {
+    public Iterable<GlucoseRecord> findAll() {
         return glucoseRecordRepository.findAll();
     }
 
-    @GetMapping("/date/{unix}")
-    public Iterable<GlucoseRecord> getOnDate(@PathVariable Long unix) {
-        final Instant from = Instant.ofEpochSecond(unix);
-        return glucoseService.findByPeriod(from, from.plus(1, ChronoUnit.DAYS).minusNanos(1));
+    @GetMapping("/date/{timestamp}")
+    public Iterable<GlucoseRecord> findOnDate(@PathVariable Long timestamp) {
+        final Instant from = Instant.ofEpochSecond(timestamp);
+        final Instant to = from.plus(1, ChronoUnit.DAYS).minusNanos(1);
+        return glucoseRecordRepository.findByDateBetweenOrderByDate(from, to);
+    }
+
+    @GetMapping("/find")
+    public List<GlucoseRecord> findBetween(@RequestParam Long from, @RequestParam Long to) {
+        return glucoseRecordRepository.findByDateBetweenOrderByDate(
+                Instant.ofEpochSecond(from), Instant.ofEpochSecond(to)
+        );
     }
 
     @GetMapping("/lastId")

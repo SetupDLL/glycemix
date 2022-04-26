@@ -1,22 +1,14 @@
 class GlucoseRepository {
 
-    findOnDate(date, dataSetName, primary) {
+    findOnDate(date) {
         let from = date.startOf('day').toSeconds();
         return fetch(`/entries/date/${from}`)
             .then((response) => {
                 return response.json();
             })
             .then(data => {
-                return new GlucoseDataSet(dataSetName, data.map(e => new GlucoseEntry(e.date, e.glucose)), primary);
+                return new GlucoseDataSet(data.map(e => new GlucoseEntry(e.date, e.glucose)));
             });
-    }
-
-    findToday() {
-        return this.findOnDate(DateTime.now(), 'Today', true);
-    }
-
-    findYesterday() {
-        return this.findOnDate(DateTime.now().minus({days: 1}), 'Yesterday', false);
     }
 
     getLastId() {

@@ -1,26 +1,23 @@
+const START_OF_DAY = new Date(1970, 1, 1, 0, 0, 0).getTime();
+const END_OF_DAY = new Date(1970, 1, 1, 23, 59, 59, 999).getTime();
+
 const config = {
     type: 'line',
-    // plugins: [
-    //     {
-    //         id: 'custom_canvas_background_color',
-    //         beforeDraw: (chart) => {
-    //             const ctx = chart.canvas.getContext('2d');
-    //             ctx.save();
-    //             ctx.globalCompositeOperation = 'destination-over';
-    //             ctx.fillStyle = BACKGROUND_COLOR;
-    //             ctx.fillRect(0, 0, chart.width, chart.height);
-    //             ctx.restore();
-    //         }
-    //     }
-    // ],
     options: {
         responsive: true,
         // maintainAspectRatio: false,
         plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: false
+            },
             annotation: {
                 annotations: {
                     box1: {
                         type: 'box',
+                        drawTime: 'beforeDatasetsDraw',
                         yMin: MIN_TARGET_GLUCOSE,
                         yMax: MAX_TARGET_GLUCOSE,
                         backgroundColor: GLUCOSE_RANGE_COLOR,
@@ -28,25 +25,54 @@ const config = {
                         borderWidth: GLUCOSE_RANGE_BORDER_WIDTH
                     }
                 }
+            },
+            datalabels: {
+                color: LABEL_TEXT_COLOR,
+                font: {
+                    size: 14,
+                    weight: 'bold'
+                },
+                formatter: (value, context) => {
+                    return value.glucose;
+                },
+                align: 'end',
+                anchor: 'end'
             }
-            // title: {
-            //     text: 'Chart.js Time Scale',
-            //     display: true
-            // },
-            // legend: {
-            //     position: 'top',
-            // },
         },
         parsing: {
             xAxisKey: 'date',
             yAxisKey: 'glucose'
         },
         scales: {
+            y: {
+                display: false,
+                suggestedMin: 2,
+                suggestedMax: 20,
+                ticks: {
+                    stepSize: 1
+                }
+            },
             x: {
                 type: 'time',
+                min: START_OF_DAY,
+                max: END_OF_DAY,
                 time: {
-                    // Luxon format string
-                    tooltipFormat: 'T'
+                    tooltipFormat: 'T',
+                    // unit: 'hour',
+                    // stepSize: 1
+                    format: "HH:mm",
+                    displayFormats: {
+                        minute: 'HH:mm',
+                        hour: 'HH:mm'
+                    }
+                },
+                ticks: {
+                    major: {
+                        enabled: true, // <-- This is the key line
+                        fontStyle: 'bold', //You can also style these values differently
+                        fontSize: 14 //You can also style these values differently
+                    },
+                    source: 'data'
                 }
             }
         }
@@ -60,7 +86,17 @@ class GlucoseChart extends Chart {
         super(element, config);
     }
 
-    updateDataSets(dataSets) {
-        config.data.datasets = dataSets;
+    updateDataSet(dataSet) {
+        config.data.datasets = [dataSet];
     }
+}
+
+function updateTimeBounds(dataSet) {
+    let record = dataSet.data[0];
+    if (!record) return;
+
+    let date = DateTime.fromMillis(record.date);
+    let x = config.options.scales.x;
+    x.min = date.startOf('day').toMillis();
+    x.max = date.endOf('day').toMillis();
 }

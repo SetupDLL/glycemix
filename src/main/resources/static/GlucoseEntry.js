@@ -1,8 +1,7 @@
-const MG_DL_IN_MMOL_L = 18.018;
-
 class GlucoseEntry {
 
     constructor(date, glucose) {
+        // this.date = new Date(date * 1000).getTime();
         this.date = transformDate(date * 1000);
         this.glucose = glucose;
     }
