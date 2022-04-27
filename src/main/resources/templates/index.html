@@ -79,7 +79,7 @@
     });
 
     function checkUpdates() {
-        if (isCurrentDate(forDate)) return;
+        if (!isCurrentDate(forDate)) return;
 
         glucoseRepository.getLastId().then(id => {
             if (lastId !== id) {
