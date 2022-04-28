@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Fukk diabetes</title>
 
+    <link rel="icon" href="../static/favicon.ico" type="image/ico">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@^2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@^1"></script>
@@ -31,7 +33,9 @@
     <input type="text" id="date" placeholder="Выберите дату"/>
     <button id="nextDate" onclick="shiftDays(1)">></button>
 </div>
-<canvas id="myChart"></canvas>
+<div id="chart-container">
+    <canvas id="myChart"><p>Canvas chart</p></canvas>
+</div>
 
 <script>
     Chart.register(ChartDataLabels);

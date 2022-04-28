@@ -1,8 +1,8 @@
 const config = {
     type: 'line',
     options: {
-        responsive: true,
-        // maintainAspectRatio: false,
+        // responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false
